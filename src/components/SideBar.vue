@@ -3,7 +3,7 @@
         <li v-for="(item,index) in list" :key="index">
             
              <span v-if="item != 'mark'">{{item}}</span>
-            <span v-if="item =='mark'" ><input class="form-check-input checkInput" type="checkbox" value="" id="flexCheckDefault" ></span>
+            <span v-if="item =='mark'" ><input class="form-check-input checkInput" @click="changeBody(index)" type="checkbox" value="" id="flexCheckDefault" ></span>
             
         </li>
     </ul>
@@ -28,7 +28,10 @@ export default {
     }
   },
   methods:{
-
+   changeBody(number){
+        // let check = document.getElementsByClassName("checkInput");
+        bus.$emit('changeBody',this.list,number);
+    }
   },
   mounted(){
       bus.$on('changeTitle',(data)=>{
