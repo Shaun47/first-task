@@ -1,28 +1,75 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+        <div class="container-fluid">
+        <div class="row ">
+            <div class="col-md-4 sidebar">
+                <SideBar :fname="firstname" :lname="lastname"></SideBar>
+
+            </div>
+            <div class="col-md-8">
+                  
+                <div class="row">
+                  <HeaderCom :name="name" @submit="test"></HeaderCom>
+                  <BodyCom></BodyCom>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import SideBar from './components/SideBar.vue'
+import HeaderCom from './components/HeaderCom.vue'
+import BodyCom from './components/BodyCom.vue'
+
 
 export default {
   name: 'App',
+  
   components: {
-    HelloWorld
-  }
+    SideBar,
+    HeaderCom,
+    BodyCom
+},
+ data(){
+   return {
+     name: 'Shaun',
+     firstname: '',
+     lastname: '',
+   }
+ },
+ methods:{
+   test(fname,lname){
+     console.log(fname,lname);
+     this.firstname = fname;
+     this.lastname = lname;
+   }
+ }
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+.sidebar{
+    border: 1px solid black;
+    padding: 35px;
 }
+
+
 </style>
