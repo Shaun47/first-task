@@ -1,43 +1,37 @@
 <template>
-    <ul class="personal_info" >
-        <li v-for="(item,index) in list" :key="index">
-            
-             <span v-if="item != 'mark'">{{item}}</span>
-            <span v-if="item =='mark'" ><input class="form-check-input checkInput" @click="changeBody(index)" type="checkbox" value="" id="flexCheckDefault" ></span>
+  <div class="sidebarr">
+        <ul class="personal_info" v-for="(item,index) in EMPLOYEE_INFO" :key="index">
+        <li style="font-weight:bolder;">
+             {{item.name}}
+             
             
         </li>
+        <li ><span style="margin-right:5px;">{{item.address}}</span><span><input class="form-check-input checkInput" @change="checkHandler" v-model="addedList" :value="item" type="checkbox" id="flexCheckDefault" ></span></li>
     </ul>
+  </div>
 </template>
 
 <script>
-import {bus} from '../main'
+
 
 export default {
   name: 'SideBar',
-  // props: {
-  //   msg: String,
-  //   fname: String,
-  //   lname: String,
-    
-  // },
+  props:['EMPLOYEE_INFO'],
   data(){
     return {
-      list: '',
-      ulLi: ''
-      
+      addedList: []
     }
   },
   methods:{
-   changeBody(number){
-        // let check = document.getElementsByClassName("checkInput");
-        bus.$emit('changeBody',this.list,number);
-    }
+
+      checkHandler(){
+        this.$emit('selected_employee', this.addedList);
+        console.log(this.addedList)
+      },
   },
   mounted(){
-      bus.$on('changeTitle',(data)=>{
-        this.list = data;
-
-      })
+    
+      
   }
 }
 </script>
@@ -47,6 +41,6 @@ export default {
 
 .personal_info{
     list-style-type: none;
-    font-weight: bold;
+   
 }
 </style>

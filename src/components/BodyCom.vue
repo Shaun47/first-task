@@ -1,46 +1,63 @@
 <template>
-                    <div class="col-md-12 body">
-                        <table class="table">
-                            <thead>
-                              <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Address</th>
-                                <th scope="col">Action</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr v-for="(item,index) in list" :key="index">
-                                <th scope="row">{{index+1}}</th>
-                                <td>{{item.name}}</td>
-                                <td>{{item.address}}</td>
-                                <td><button class="btn btn-info">edit</button> <button class="btn btn-danger" @click="remove_item(index)">Delete</button></td>
-                              </tr>
-                            </tbody>
-                          </table>
-                    </div>
-</template>
+  <div class="col-md-12 body">
+      <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Name</th>
+              <th scope="col">Address</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(item,index) in SELECTED_EMPLOYEE" :key="index">
+              <th scope="row">{{index+1}}</th>
+              <td>{{item.name}}</td>
+              <td>{{item.address}}</td>
+              <td><button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#exampleModal" @click="editHandler(item)">edit</button> <button class="btn btn-danger" @click="deleteHandler(item)">Delete</button></td>
+            </tr>
+          </tbody>
+        </table>
 
-<script>
-import {bus} from '../main'
 
-export default {
+      <!-- Modal -->
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                  <div class="input-group flex-nowrap">
+                      <span class="input-group-text" id="addon-wrapping">Name</span>
+                      <input type="text" class="form-control"  aria-label="Username" aria-describedby="addon-wrapping" v-model="name"> 
+                  </div>
+                  <div class="input-group flex-nowrap mt-3">
+                      <span class="input-group-text" id="addon-wrapping">Address</span>
+                      <input type="text" class="form-control"  aria-label="Address" aria-describedby="addon-wrapping" v-model="address">
+                  </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" @click="updatedInfo" >Update</button>
+            </div>
+          </div>
+        </div>
+      </div>
+        </div>
 
 
   
+</template>
+
+<script>
+
+
+export default {
   name: 'BodyCom',
-  props: {
-    msg: String
-  },
+  props: ['SELECTED_EMPLOYEE'],
 mounted(){
-      bus.$on('changeBody',(data,num)=>{
-        // this.list.push(data[num-2]);
-        // this.list.push(data[num-1]);
-        this.element.name = data[num-2];
-        this.element.address = data[num-1];
-        console.log(this.element);
-        this.list.push(this.element);
-      })
+
   },
   data(){
     return {
@@ -51,8 +68,16 @@ mounted(){
     }
   },
   methods:{
-    remove_item(index){
-      this.list.splice(index,1);
+    deleteHandler(item){
+      this.$emit('delete-employee', item)
+    },
+    editHandler(item){
+        this.name = item.name;
+        this.address = item.address;
+       
+    },
+    updatedInfo(){
+      
     }
   }
 }
